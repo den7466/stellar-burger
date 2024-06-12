@@ -5,9 +5,11 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 import { ingredientsSlice } from './slices/ingredientsSlice';
+import { orderSlice } from './slices/orderSlice';
 
 const rootReducer = {
-  [ingredientsSlice.name]: ingredientsSlice.reducer
+  [ingredientsSlice.name]: ingredientsSlice.reducer,
+  [orderSlice.name]: orderSlice.reducer
 }; // Заменить на импорт настоящего редьюсера
 
 const store = configureStore({
