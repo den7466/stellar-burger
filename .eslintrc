@@ -13,7 +13,7 @@
     "prettier/prettier": [
       "warn",
       {
-        "usePrettierrc": true
+        "usePrettierrc": false
       }
     ],
     "react/react-in-jsx-scope": "off",

@@ -10,15 +10,24 @@ import {
   ResetPassword
 } from '@pages';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import '../../index.css';
 import styles from './app.module.css';
 import { ProtectedRoute } from '../protected-route/ProtectedRoute';
+import { useDispatch } from '../../services/store';
+import { useEffect } from 'react';
+import { getIngridients } from '../../services/slices/ingredientsSlice';
 
-const App = () => (
-  <div className={styles.app}>
-    <AppHeader />
-    <BrowserRouter>
+const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getIngridients());
+  }, [dispatch]);
+
+  return (
+    <div className={styles.app}>
+      <AppHeader />
       <Routes>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
@@ -98,8 +107,8 @@ const App = () => (
         />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
-    </BrowserRouter>
-  </div>
-);
+    </div>
+  );
+};
 
 export default App;
