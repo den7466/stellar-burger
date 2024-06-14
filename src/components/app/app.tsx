@@ -16,7 +16,7 @@ import styles from './app.module.css';
 import { ProtectedRoute } from '../protected-route/ProtectedRoute';
 import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
-import { getIngridients } from '../../services/slices/ingredientsSlice';
+import { getIngridientsThunk } from '../../services/slices/ingredientsSlice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    dispatch(getIngridients());
+    dispatch(getIngridientsThunk());
   }, [dispatch]);
 
   return (
@@ -41,7 +41,7 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Login />
             </ProtectedRoute>
           }
@@ -49,7 +49,7 @@ const App = () => {
         <Route
           path='/register'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Register />
             </ProtectedRoute>
           }
@@ -57,7 +57,7 @@ const App = () => {
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ForgotPassword />
             </ProtectedRoute>
           }

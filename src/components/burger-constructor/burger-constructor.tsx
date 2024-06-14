@@ -2,13 +2,13 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useSelector } from '../../services/store';
-import { selectorsOrder } from '../../services/slices/orderSlice';
+import { getConstructorSelector } from '../../services/slices/constructorSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const { getOrderSelector } = selectorsOrder;
-  const { constructorItems, orderRequest, orderModalData } =
-    useSelector(getOrderSelector);
+  const { constructorItems, orderRequest, orderModalData } = useSelector(
+    getConstructorSelector
+  );
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
