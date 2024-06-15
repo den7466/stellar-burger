@@ -17,6 +17,10 @@ import { ProtectedRoute } from '../protected-route/ProtectedRoute';
 import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { getIngridientsThunk } from '../../services/slices/ingredientsSlice';
+import {
+  authChecked,
+  getUserThunk
+} from '../../services/slices/authorizationSlice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,8 +33,11 @@ const App = () => {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem('refreshToken');
+    if (token) dispatch(getUserThunk());
+    else dispatch(authChecked());
     dispatch(getIngridientsThunk());
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className={styles.app}>
@@ -65,7 +72,7 @@ const App = () => {
         <Route
           path='/reset-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ResetPassword />
             </ProtectedRoute>
           }

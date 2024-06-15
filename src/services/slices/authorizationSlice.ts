@@ -2,13 +2,14 @@ import {
   TAuthResponse,
   TLoginData,
   TRegisterData,
+  TUserResponse,
   getUserApi,
   loginUserApi,
-  registerUserApi
+  registerUserApi,
+  updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getCookie } from '../../utils/cookie';
-import { RootState } from '../store';
+import { setCookie } from '../../utils/cookie';
 
 interface SerializedError {
   name?: string;
@@ -20,21 +21,23 @@ interface SerializedError {
 export type TAuthorizationState = {
   isAuthChecked: boolean;
   isAuthenticated: boolean;
-  userData: TAuthResponse | null;
-  registrationReques: boolean;
+  userData: TAuthResponse | TUserResponse | null;
+  registrationRequest: boolean;
   registrationError: SerializedError | null;
   loginUserError: SerializedError | null;
   loginUserRequest: boolean;
+  updateUserRequest: boolean;
 };
 
 const initialState: TAuthorizationState = {
   isAuthChecked: false,
   isAuthenticated: false,
   userData: null,
-  registrationReques: false,
+  registrationRequest: false,
   registrationError: null,
   loginUserError: null,
-  loginUserRequest: false
+  loginUserRequest: false,
+  updateUserRequest: false
 };
 
 export const registrationNewUserThunk = createAsyncThunk(
@@ -44,7 +47,23 @@ export const registrationNewUserThunk = createAsyncThunk(
 
 export const loginUserThunk = createAsyncThunk(
   'authorization/loginUser',
-  async (data: TLoginData) => await loginUserApi(data)
+  async (data: TLoginData, { rejectWithValue }) => {
+    const dataResponse = await loginUserApi(data);
+    if (!dataResponse?.success) return rejectWithValue(dataResponse);
+    setCookie('accessToken', dataResponse.accessToken);
+    localStorage.setItem('refreshToken', dataResponse.refreshToken);
+    return dataResponse;
+  }
+);
+
+export const getUserThunk = createAsyncThunk(
+  'authorization/getUser',
+  async () => await getUserApi()
+);
+
+export const updateUserThunk = createAsyncThunk(
+  'authorization/updateUser',
+  async (data: TRegisterData) => await updateUserApi(data)
 );
 
 export const authorizationSlice = createSlice({
@@ -53,6 +72,11 @@ export const authorizationSlice = createSlice({
   reducers: {
     authChecked: (state) => {
       state.isAuthChecked = true;
+    },
+    logoutUser: (state) => {
+      state.userData = null;
+      state.isAuthChecked = true;
+      state.isAuthenticated = false;
     }
   },
   selectors: {
@@ -61,23 +85,24 @@ export const authorizationSlice = createSlice({
     getLoginErrorSelector: (state: TAuthorizationState) => state.loginUserError,
     getAuthenticatedSelector: (state: TAuthorizationState) =>
       state.isAuthenticated,
-    getAuthCheckedSelector: (state: TAuthorizationState) => state.isAuthChecked
+    getAuthCheckedSelector: (state: TAuthorizationState) => state.isAuthChecked,
+    getUserSelector: (state: TAuthorizationState) => state.userData
   },
   extraReducers: (builder) => {
     builder
       .addCase(registrationNewUserThunk.pending, (state) => {
-        state.registrationReques = true;
+        state.registrationRequest = true;
         state.registrationError = null;
       })
       .addCase(registrationNewUserThunk.fulfilled, (state, action) => {
         state.userData = action.payload;
-        state.registrationReques = false;
+        state.registrationRequest = false;
         state.isAuthChecked = true;
         state.isAuthenticated = true;
       })
       .addCase(registrationNewUserThunk.rejected, (state, action) => {
         state.registrationError = action.error;
-        state.registrationReques = false;
+        state.registrationRequest = false;
         state.isAuthChecked = true;
       });
 
@@ -97,12 +122,44 @@ export const authorizationSlice = createSlice({
         state.loginUserRequest = false;
         state.isAuthChecked = true;
       });
+
+    builder
+      .addCase(getUserThunk.pending, (state) => {
+        state.loginUserRequest = true;
+      })
+      .addCase(getUserThunk.fulfilled, (state, action) => {
+        state.isAuthChecked = true;
+        state.loginUserRequest = false;
+        state.userData = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(getUserThunk.rejected, (state) => {
+        state.isAuthChecked = true;
+        state.loginUserRequest = false;
+      });
+
+    builder
+      .addCase(updateUserThunk.pending, (state) => {
+        state.updateUserRequest = true;
+      })
+      .addCase(updateUserThunk.fulfilled, (state, action) => {
+        state.isAuthChecked = true;
+        state.updateUserRequest = false;
+        state.userData = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(updateUserThunk.rejected, (state) => {
+        state.isAuthChecked = true;
+        state.updateUserRequest = false;
+      });
   }
 });
 
+export const { authChecked, logoutUser } = authorizationSlice.actions;
 export const {
   getRegistrationErrorSelector,
   getLoginErrorSelector,
   getAuthenticatedSelector,
-  getAuthCheckedSelector
+  getAuthCheckedSelector,
+  getUserSelector
 } = authorizationSlice.selectors;

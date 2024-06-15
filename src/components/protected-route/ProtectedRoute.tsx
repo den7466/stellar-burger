@@ -1,4 +1,7 @@
-import { getAuthCheckedSelector } from '../../services/slices/authorizationSlice';
+import {
+  getAuthCheckedSelector,
+  getUserSelector
+} from '../../services/slices/authorizationSlice';
 import { useSelector } from '../../services/store';
 import { Preloader } from '../ui/preloader';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -12,16 +15,14 @@ export const ProtectedRoute = ({
   onlyUnAuth,
   children
 }: ProtectedRouteProps) => {
-  // const isAuthChecked = useSelector(isAuthCheckedSelector); // isAuthCheckedSelector — селектор получения состояния загрузки пользователя
-  // const user = useSelector(userDataSelector); // userDataSelector — селектор получения пользователя из store
   const location = useLocation();
   const isAuthChecked = useSelector(getAuthCheckedSelector);
-  const user = null;
+  const user = useSelector(getUserSelector);
 
-  // if (!isAuthChecked) {
-  //   // пока идёт чекаут пользователя, показываем прелоадер
-  //   return <Preloader />;
-  // }
+  if (!isAuthChecked) {
+    // пока идёт чекаут пользователя, показываем прелоадер
+    return <Preloader />;
+  }
 
   if (!onlyUnAuth && !user) {
     // если пользователь на странице авторизации и данных в хранилище нет, то делаем редирект

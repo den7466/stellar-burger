@@ -20,9 +20,9 @@ export const Login: FC = () => {
     dispatch(loginUserThunk({ email, password }));
   };
 
-  // if (isAuthenticated) {
-  //   return <Navigate to={'/'} />;
-  // }
+  if (isAuthenticated) {
+    return <Navigate to={'/'} />;
+  }
 
   return (
     <LoginUI
