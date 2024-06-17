@@ -5,29 +5,27 @@ import {
   getUserSelector,
   updateUserThunk
 } from '../../services/slices/authorizationSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
-  const userData = useSelector(getUserSelector);
+  const user = useSelector(getUserSelector);
   const dispatch = useDispatch();
-  const user = {
-    name: userData ? userData.user.name : '',
-    email: userData ? userData.user.email : ''
-  };
+  const navigate = useNavigate();
 
   const [formValue, setFormValue] = useState({
-    name: user.name,
-    email: user.email,
+    name: user ? user.name : '',
+    email: user ? user.email : '',
     password: ''
   });
 
   useEffect(() => {
     setFormValue((prevState) => ({
       ...prevState,
-      name: user.name,
-      email: user.email
+      name: user ? user.name : '',
+      email: user ? user.email : ''
     }));
-  }, []);
+  }, [user]);
 
   const isFormChanged =
     formValue.name !== user?.name ||
@@ -38,8 +36,8 @@ export const Profile: FC = () => {
     e.preventDefault();
     dispatch(updateUserThunk(formValue));
     setFormValue({
-      name: user.name, // TODO: тут косяк с отображением имени после смены
-      email: user.email,
+      name: user ? user.name : '',
+      email: user ? user.email : '',
       password: ''
     });
   };
@@ -47,8 +45,8 @@ export const Profile: FC = () => {
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
-      name: user.name,
-      email: user.email,
+      name: user ? user.name : '',
+      email: user ? user.email : '',
       password: ''
     });
   };

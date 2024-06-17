@@ -86,7 +86,7 @@ export const authorizationSlice = createSlice({
     getAuthenticatedSelector: (state: TAuthorizationState) =>
       state.isAuthenticated,
     getAuthCheckedSelector: (state: TAuthorizationState) => state.isAuthChecked,
-    getUserSelector: (state: TAuthorizationState) => state.userData
+    getUserSelector: (state: TAuthorizationState) => state.userData?.user
   },
   extraReducers: (builder) => {
     builder

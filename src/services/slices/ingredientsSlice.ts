@@ -39,4 +39,4 @@ export const ingredientsSlice = createSlice({
   }
 });
 
-export const selectorsIngredients = ingredientsSlice.selectors;
+export const { getIngredientsSelector } = ingredientsSlice.selectors;

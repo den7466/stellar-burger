@@ -4,6 +4,6 @@ import { useSelector } from '../../services/store';
 import { getUserSelector } from '../../services/slices/authorizationSlice';
 
 export const AppHeader: FC = () => {
-  const userData = useSelector(getUserSelector);
-  return <AppHeaderUI userName={userData?.user.name} />;
+  const user = useSelector(getUserSelector);
+  return <AppHeaderUI userName={user?.name} />;
 };
