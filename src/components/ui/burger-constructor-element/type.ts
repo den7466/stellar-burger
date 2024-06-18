@@ -6,5 +6,5 @@ export type BurgerConstructorElementUIProps = {
   totalItems: number;
   handleMoveUp: () => void;
   handleMoveDown: () => void;
-  handleClose: () => void;
+  handleDelete: () => void;
 };

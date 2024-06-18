@@ -15,27 +15,39 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
       <div className={styles.menu_part_left}>
         <>
           {/* TODO: сдеелать чтобы иконки тоже перекрашивались */}
-          <BurgerIcon type={'primary'} />
-          <NavLink
-            to={'/'}
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.link_active}` : styles.link
-            }
-          >
-            <p className='text text_type_main-default ml-2 mr-10'>
-              Конструктор
-            </p>
+          <NavLink to={'/'}>
+            {({ isActive }) => (
+              <div
+                className={
+                  isActive
+                    ? `${styles.link} ${styles.link_active}`
+                    : `${styles.link}`
+                }
+              >
+                <BurgerIcon type={isActive ? 'primary' : 'secondary'} />
+                <p className='text text_type_main-default ml-2 mr-10'>
+                  Конструктор
+                </p>
+              </div>
+            )}
           </NavLink>
         </>
         <>
-          <ListIcon type={'primary'} />
-          <NavLink
-            to={'/feed'}
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.link_active}` : styles.link
-            }
-          >
-            <p className='text text_type_main-default ml-2'>Лента заказов</p>
+          <NavLink to={'/feed'}>
+            {({ isActive }) => (
+              <div
+                className={
+                  isActive
+                    ? `${styles.link} ${styles.link_active}`
+                    : `${styles.link}`
+                }
+              >
+                <ListIcon type={isActive ? 'primary' : 'secondary'} />
+                <p className='text text_type_main-default ml-2'>
+                  Лента заказов
+                </p>
+              </div>
+            )}
           </NavLink>
         </>
       </div>
@@ -45,16 +57,21 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
         </Link>
       </div>
       <div className={styles.link_position_last}>
-        <ProfileIcon type={'primary'} />
-        <NavLink
-          to={'/profile'}
-          className={({ isActive }) =>
-            isActive ? `${styles.link} ${styles.link_active}` : styles.link
-          }
-        >
-          <p className='text text_type_main-default ml-2'>
-            {userName || 'Личный кабинет'}
-          </p>
+        <NavLink to={'/profile'}>
+          {({ isActive }) => (
+            <div
+              className={
+                isActive
+                  ? `${styles.link} ${styles.link_active}`
+                  : `${styles.link}`
+              }
+            >
+              <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
+              <p className='text text_type_main-default ml-2'>
+                {userName || 'Личный кабинет'}
+              </p>
+            </div>
+          )}
         </NavLink>
       </div>
     </nav>

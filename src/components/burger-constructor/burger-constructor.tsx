@@ -7,7 +7,8 @@ import {
   getConstructorItemsSelector,
   getOrderRequestStatusSelector,
   getorderModalDataSelector,
-  postOrderThunk
+  postOrderThunk,
+  resetOrderConstructor
 } from '../../services/slices/orderSlice';
 
 export const BurgerConstructor: FC = () => {
@@ -28,8 +29,7 @@ export const BurgerConstructor: FC = () => {
     dispatch(postOrderThunk(ingredientIds));
   };
   const closeOrderModal = () => {
-    // navigate(-1);
-    // TODO: err: не работает закрытие модалки
+    dispatch(resetOrderConstructor());
   };
 
   const price = useMemo(

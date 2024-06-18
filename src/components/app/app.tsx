@@ -21,7 +21,6 @@ import {
   authChecked,
   getUserThunk
 } from '../../services/slices/authorizationSlice';
-import { getFeedsAllThunk } from '../../services/slices/orderSlice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -100,9 +99,7 @@ const App = () => {
           path='/profile/orders/:number'
           element={
             <ProtectedRoute>
-              <Modal title='Информация о заказе' onClose={onClose}>
-                <OrderInfo />
-              </Modal>
+              <OrderInfo />
             </ProtectedRoute>
           }
         />
@@ -124,6 +121,16 @@ const App = () => {
               <Modal title='Информация о заказе' onClose={onClose}>
                 <OrderInfo />
               </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
+                <Modal title='Информация о заказе' onClose={onClose}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
             }
           />
         </Routes>
