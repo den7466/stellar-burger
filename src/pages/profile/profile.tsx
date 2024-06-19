@@ -2,16 +2,17 @@ import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import {
+  getUserRequestSelector,
   getUserSelector,
   updateUserThunk
 } from '../../services/slices/authorizationSlice';
-import { useNavigate } from 'react-router-dom';
+import { Preloader } from '@ui';
 
 export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
   const user = useSelector(getUserSelector);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const userRequest = useSelector(getUserRequestSelector);
 
   const [formValue, setFormValue] = useState({
     name: user ? user.name : '',
@@ -57,6 +58,10 @@ export const Profile: FC = () => {
       [e.target.name]: e.target.value
     }));
   };
+
+  if (userRequest) {
+    return <Preloader />;
+  }
 
   return (
     <ProfileUI

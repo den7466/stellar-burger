@@ -4,9 +4,9 @@ import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '../ui/feed-info';
 import { useSelector } from '../../services/store';
 import {
-  getFeedsDataSelector,
-  getFeedsAllSelector
-} from '../../services/slices/orderSlice';
+  getFeedsAllSelector,
+  getFeedsDataSelector
+} from '../../services/slices/feedSlice';
 
 const getOrders = (orders: TOrder[], status: string): number[] =>
   orders

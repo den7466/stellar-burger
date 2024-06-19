@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from '../../services/store';
 import {
   getFeedsAllSelector,
   getFeedsAllThunk
-} from '../../services/slices/orderSlice';
+} from '../../services/slices/feedSlice';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */

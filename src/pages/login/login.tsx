@@ -3,17 +3,20 @@ import { LoginUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   getAuthenticatedSelector,
-  getLoginErrorSelector,
+  getUserErrorSelector,
+  getUserRequestSelector,
   loginUserThunk
 } from '../../services/slices/authorizationSlice';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { Preloader } from '@ui';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const loginUserError = useSelector(getLoginErrorSelector);
+  const loginUserError = useSelector(getUserErrorSelector);
   const isAuthenticated = useSelector(getAuthenticatedSelector);
+  const userRequest = useSelector(getUserRequestSelector);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -22,6 +25,10 @@ export const Login: FC = () => {
 
   if (isAuthenticated) {
     return <Navigate to={'/'} />;
+  }
+
+  if (userRequest) {
+    return <Preloader />;
   }
 
   return (

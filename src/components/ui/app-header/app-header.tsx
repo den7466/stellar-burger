@@ -14,7 +14,6 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
     <nav className={`${styles.menu} p-4`}>
       <div className={styles.menu_part_left}>
         <>
-          {/* TODO: сдеелать чтобы иконки тоже перекрашивались */}
           <NavLink to={'/'}>
             {({ isActive }) => (
               <div

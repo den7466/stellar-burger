@@ -22,27 +22,27 @@ export type TAuthorizationState = {
   isAuthChecked: boolean;
   isAuthenticated: boolean;
   userData: TAuthResponse | TUserResponse | null;
-  registrationRequest: boolean;
-  registrationError: SerializedError | null;
-  loginUserError: SerializedError | null;
-  loginUserRequest: boolean;
-  updateUserRequest: boolean;
+  userRequest: boolean;
+  userError: SerializedError | null;
 };
 
 const initialState: TAuthorizationState = {
   isAuthChecked: false,
   isAuthenticated: false,
   userData: null,
-  registrationRequest: false,
-  registrationError: null,
-  loginUserError: null,
-  loginUserRequest: false,
-  updateUserRequest: false
+  userRequest: false,
+  userError: null
 };
 
 export const registrationNewUserThunk = createAsyncThunk(
   'authorization/registrationUser',
-  async (data: TRegisterData) => await registerUserApi(data)
+  async (data: TRegisterData, { rejectWithValue }) => {
+    const dataResponse = await registerUserApi(data);
+    if (!dataResponse?.success) return rejectWithValue(dataResponse);
+    setCookie('accessToken', dataResponse.accessToken);
+    localStorage.setItem('refreshToken', dataResponse.refreshToken);
+    return dataResponse;
+  }
 );
 
 export const loginUserThunk = createAsyncThunk(
@@ -80,86 +80,85 @@ export const authorizationSlice = createSlice({
     }
   },
   selectors: {
-    getRegistrationErrorSelector: (state: TAuthorizationState) =>
-      state.registrationError,
-    getLoginErrorSelector: (state: TAuthorizationState) => state.loginUserError,
+    getUserErrorSelector: (state: TAuthorizationState) => state.userError,
     getAuthenticatedSelector: (state: TAuthorizationState) =>
       state.isAuthenticated,
     getAuthCheckedSelector: (state: TAuthorizationState) => state.isAuthChecked,
-    getUserSelector: (state: TAuthorizationState) => state.userData?.user
+    getUserSelector: (state: TAuthorizationState) => state.userData?.user,
+    getUserRequestSelector: (state: TAuthorizationState) => state.userRequest
   },
   extraReducers: (builder) => {
     builder
       .addCase(registrationNewUserThunk.pending, (state) => {
-        state.registrationRequest = true;
-        state.registrationError = null;
+        state.userRequest = true;
+        state.userError = null;
       })
       .addCase(registrationNewUserThunk.fulfilled, (state, action) => {
         state.userData = action.payload;
-        state.registrationRequest = false;
+        state.userRequest = false;
         state.isAuthChecked = true;
         state.isAuthenticated = true;
       })
       .addCase(registrationNewUserThunk.rejected, (state, action) => {
-        state.registrationError = action.error;
-        state.registrationRequest = false;
+        state.userError = action.error;
+        state.userRequest = false;
         state.isAuthChecked = true;
       });
 
     builder
       .addCase(loginUserThunk.pending, (state) => {
-        state.loginUserRequest = true;
-        state.loginUserError = null;
+        state.userRequest = true;
+        state.userError = null;
       })
       .addCase(loginUserThunk.fulfilled, (state, action) => {
         state.userData = action.payload;
-        state.loginUserRequest = false;
+        state.userRequest = false;
         state.isAuthChecked = true;
         state.isAuthenticated = true;
       })
       .addCase(loginUserThunk.rejected, (state, action) => {
-        state.loginUserError = action.error;
-        state.loginUserRequest = false;
+        state.userError = action.error;
+        state.userRequest = false;
         state.isAuthChecked = true;
       });
 
     builder
       .addCase(getUserThunk.pending, (state) => {
-        state.loginUserRequest = true;
+        state.userRequest = true;
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
         state.isAuthChecked = true;
-        state.loginUserRequest = false;
+        state.userRequest = false;
         state.userData = action.payload;
         state.isAuthenticated = true;
       })
       .addCase(getUserThunk.rejected, (state) => {
         state.isAuthChecked = true;
-        state.loginUserRequest = false;
+        state.userRequest = false;
       });
 
     builder
       .addCase(updateUserThunk.pending, (state) => {
-        state.updateUserRequest = true;
+        state.userRequest = true;
       })
       .addCase(updateUserThunk.fulfilled, (state, action) => {
         state.isAuthChecked = true;
-        state.updateUserRequest = false;
+        state.userRequest = false;
         state.userData = action.payload;
         state.isAuthenticated = true;
       })
       .addCase(updateUserThunk.rejected, (state) => {
         state.isAuthChecked = true;
-        state.updateUserRequest = false;
+        state.userRequest = false;
       });
   }
 });
 
 export const { authChecked, logoutUser } = authorizationSlice.actions;
 export const {
-  getRegistrationErrorSelector,
-  getLoginErrorSelector,
   getAuthenticatedSelector,
   getAuthCheckedSelector,
-  getUserSelector
+  getUserSelector,
+  getUserRequestSelector,
+  getUserErrorSelector
 } = authorizationSlice.selectors;

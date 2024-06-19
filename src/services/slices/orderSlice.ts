@@ -1,52 +1,26 @@
 import {
-  TFeedsResponse,
   TNewOrderResponse,
   TOrderResponse,
-  getFeedsApi,
   getOrderByNumberApi,
   getOrdersApi,
   orderBurgerApi
 } from '@api';
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TConstructorIngredient, TOrder } from '@utils-types';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { TOrder } from '@utils-types';
 
-export type TConstructorItems = {
-  bun: TConstructorIngredient | null;
-  ingredients: TConstructorIngredient[];
-};
-
-type TInitialState = {
-  feedData: TFeedsResponse;
+type TOrderState = {
   ordersHistory: TOrder[];
   successedOrder: TNewOrderResponse | null;
-  constructorItems: TConstructorItems;
   orderInfoData: TOrderResponse | null;
-  loading: boolean;
   orderRequest: boolean;
 };
 
-const initialState: TInitialState = {
-  feedData: {
-    success: false,
-    orders: [],
-    total: 0,
-    totalToday: 0
-  },
+const initialState: TOrderState = {
   ordersHistory: [],
   successedOrder: null,
-  constructorItems: {
-    bun: null,
-    ingredients: []
-  },
   orderInfoData: null,
-  loading: false,
   orderRequest: false
 };
-
-export const getFeedsAllThunk = createAsyncThunk(
-  'order/getFeedsAll',
-  async () => await getFeedsApi()
-);
 
 export const getOrdersThunk = createAsyncThunk(
   'order/getOrders',
@@ -67,66 +41,27 @@ export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    addIngredient: (state, action: PayloadAction<any>) => {
-      const ingredient = action.payload;
-      ingredient.type !== 'bun'
-        ? state.constructorItems.ingredients.push(ingredient)
-        : (state.constructorItems.bun = ingredient);
-    },
-    deleteIngredient: (state, action) => {
-      state.constructorItems.ingredients.splice(action.payload, 1);
-    },
-    moveUpIngredient: (state, action) => {
-      const ingredients = state.constructorItems.ingredients;
-      const tmp = ingredients[action.payload];
-      ingredients[action.payload] = ingredients[action.payload - 1];
-      ingredients[action.payload - 1] = tmp;
-      state.constructorItems.ingredients = ingredients;
-    },
-    moveDownIngredient: (state, action) => {
-      const ingredients = state.constructorItems.ingredients;
-      const tmp = ingredients[action.payload];
-      ingredients[action.payload] = ingredients[action.payload + 1];
-      ingredients[action.payload + 1] = tmp;
-      state.constructorItems.ingredients = ingredients;
-    },
-    resetOrderConstructor: () => initialState
+    resetOrderData: () => initialState
   },
   selectors: {
-    getFeedsAllSelector: (state: TInitialState) => state.feedData?.orders,
-    getFeedsDataSelector: (state: TInitialState) => state.feedData,
-    getOrdersHistorySelector: (state: TInitialState) => state.ordersHistory,
-    getOrderRequestStatusSelector: (state: TInitialState) => state.orderRequest,
-    getConstructorItemsSelector: (state: TInitialState) =>
-      state.constructorItems,
-    getorderModalDataSelector: (state: TInitialState) =>
+    getOrdersHistorySelector: (state: TOrderState) => state.ordersHistory,
+    getOrderRequestStatusSelector: (state: TOrderState) => state.orderRequest,
+    getorderModalDataSelector: (state: TOrderState) =>
       state.successedOrder?.order,
-    getOrderByNumberSelector: (state: TInitialState) =>
+    getOrderByNumberSelector: (state: TOrderState) =>
       state.orderInfoData?.orders[0]
   },
   extraReducers(builder) {
     builder
-      .addCase(getFeedsAllThunk.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getFeedsAllThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.feedData = action.payload;
-      })
-      .addCase(getFeedsAllThunk.rejected, (state) => {
-        state.loading = false;
-      });
-
-    builder
       .addCase(getOrdersThunk.pending, (state) => {
-        state.loading = true;
+        state.orderRequest = true;
       })
       .addCase(getOrdersThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.orderRequest = false;
         state.ordersHistory = action.payload;
       })
       .addCase(getOrdersThunk.rejected, (state) => {
-        state.loading = false;
+        state.orderRequest = false;
       });
 
     builder
@@ -156,18 +91,10 @@ export const orderSlice = createSlice({
 });
 
 export const {
-  getFeedsAllSelector,
-  getFeedsDataSelector,
   getOrdersHistorySelector,
   getOrderRequestStatusSelector,
-  getConstructorItemsSelector,
   getorderModalDataSelector,
   getOrderByNumberSelector
 } = orderSlice.selectors;
-export const {
-  addIngredient,
-  resetOrderConstructor,
-  deleteIngredient,
-  moveDownIngredient,
-  moveUpIngredient
-} = orderSlice.actions;
+
+export const { resetOrderData } = orderSlice.actions;
