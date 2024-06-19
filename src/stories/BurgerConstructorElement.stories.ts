@@ -36,6 +36,6 @@ export const DefaultElement: Story = {
     totalItems: 1,
     handleMoveUp: () => {},
     handleMoveDown: () => {},
-    handleClose: () => {}
+    handleDelete: () => {}
   }
 };
