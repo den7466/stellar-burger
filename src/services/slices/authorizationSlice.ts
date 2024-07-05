@@ -7,11 +7,11 @@ import {
   loginUserApi,
   registerUserApi,
   updateUserApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { setCookie } from '../../utils/cookie';
 
-interface SerializedError {
+export interface SerializedError {
   name?: string;
   message?: string;
   code?: string;
@@ -26,7 +26,7 @@ export type TAuthorizationState = {
   userError: SerializedError | null;
 };
 
-const initialState: TAuthorizationState = {
+export const initialState: TAuthorizationState = {
   isAuthChecked: false,
   isAuthenticated: false,
   userData: null,
@@ -125,6 +125,7 @@ export const authorizationSlice = createSlice({
     builder
       .addCase(getUserThunk.pending, (state) => {
         state.userRequest = true;
+        state.userError = null;
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
         state.isAuthChecked = true;
@@ -132,14 +133,16 @@ export const authorizationSlice = createSlice({
         state.userData = action.payload;
         state.isAuthenticated = true;
       })
-      .addCase(getUserThunk.rejected, (state) => {
+      .addCase(getUserThunk.rejected, (state, action) => {
         state.isAuthChecked = true;
         state.userRequest = false;
+        state.userError = action.error;
       });
 
     builder
       .addCase(updateUserThunk.pending, (state) => {
         state.userRequest = true;
+        state.userError = null;
       })
       .addCase(updateUserThunk.fulfilled, (state, action) => {
         state.isAuthChecked = true;
@@ -147,9 +150,10 @@ export const authorizationSlice = createSlice({
         state.userData = action.payload;
         state.isAuthenticated = true;
       })
-      .addCase(updateUserThunk.rejected, (state) => {
+      .addCase(updateUserThunk.rejected, (state, action) => {
         state.isAuthChecked = true;
         state.userRequest = false;
+        state.userError = action.error;
       });
   }
 });
