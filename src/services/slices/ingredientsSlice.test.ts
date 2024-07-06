@@ -1,5 +1,8 @@
+import { configureStore } from '@reduxjs/toolkit';
 import {
+  getIngredientsSelector,
   getIngridientsThunk,
+  getLoadingIngredients,
   ingredientsSlice,
   initialState
 } from './ingredientsSlice';
@@ -69,7 +72,39 @@ describe('[3] - Тест проверяют редьюсер слайса ingred
     });
   });
   describe('[3.2] - Проверка селекторов.', () => {
-    // TODO: getIngredientsSelector
-    // TODO: getLoadingIngredients
+    const ingredient = {
+      _id: '643d69a5c3f7b9001cfa093c',
+      name: 'Краторная булка N-200i',
+      type: 'bun',
+      proteins: 80,
+      fat: 24,
+      carbohydrates: 53,
+      calories: 420,
+      price: 1255,
+      image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+      image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
+      image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png'
+    };
+
+    const store = configureStore({
+      reducer: {
+        ingridients: ingredientsSlice.reducer
+      },
+      preloadedState: {
+        ingridients: {
+          data: [ingredient],
+          loading: false,
+          error: null
+        }
+      }
+    });
+    test('[3.2.1] - Проверка селектора получения ингредиентов - getIngredientsSelector', () => {
+      const data = getIngredientsSelector(store.getState());
+      expect(data).toEqual([ingredient]);
+    });
+    test('[3.2.2] - Проверка селектора получения статуса загрузки ингредиентов - getLoadingIngredients', () => {
+      const loading = getLoadingIngredients(store.getState());
+      expect(loading).toBe(false);
+    });
   });
 });

@@ -8,15 +8,12 @@ import {
   registerUserApi,
   updateUserApi
 } from '../../utils/burger-api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  SerializedError
+} from '@reduxjs/toolkit';
 import { setCookie } from '../../utils/cookie';
-
-export interface SerializedError {
-  name?: string;
-  message?: string;
-  code?: string;
-  stack?: string;
-}
 
 export type TAuthorizationState = {
   isAuthChecked: boolean;

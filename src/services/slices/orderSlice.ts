@@ -5,21 +5,27 @@ import {
   getOrdersApi,
   orderBurgerApi
 } from '../../utils/burger-api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  SerializedError
+} from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
-type TOrderState = {
+export type TOrderState = {
   ordersHistory: TOrder[];
   successedOrder: TNewOrderResponse | null;
   orderInfoData: TOrderResponse | null;
   orderRequest: boolean;
+  orderError: SerializedError | null;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   ordersHistory: [],
   successedOrder: null,
   orderInfoData: null,
-  orderRequest: false
+  orderRequest: false,
+  orderError: null
 };
 
 export const getOrdersThunk = createAsyncThunk(
@@ -55,37 +61,43 @@ export const orderSlice = createSlice({
     builder
       .addCase(getOrdersThunk.pending, (state) => {
         state.orderRequest = true;
+        state.orderError = null;
       })
       .addCase(getOrdersThunk.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.ordersHistory = action.payload;
       })
-      .addCase(getOrdersThunk.rejected, (state) => {
+      .addCase(getOrdersThunk.rejected, (state, action) => {
         state.orderRequest = false;
+        state.orderError = action.error;
       });
 
     builder
       .addCase(postOrderThunk.pending, (state) => {
         state.orderRequest = true;
+        state.orderError = null;
       })
       .addCase(postOrderThunk.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.successedOrder = action.payload;
       })
-      .addCase(postOrderThunk.rejected, (state) => {
+      .addCase(postOrderThunk.rejected, (state, action) => {
         state.orderRequest = false;
+        state.orderError = action.error;
       });
 
     builder
       .addCase(getOrderByNumberThunk.pending, (state) => {
         state.orderRequest = true;
+        state.orderError = null;
       })
       .addCase(getOrderByNumberThunk.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.orderInfoData = action.payload;
       })
-      .addCase(getOrderByNumberThunk.rejected, (state) => {
+      .addCase(getOrderByNumberThunk.rejected, (state, action) => {
         state.orderRequest = false;
+        state.orderError = action.error;
       });
   }
 });

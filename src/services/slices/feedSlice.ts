@@ -1,19 +1,25 @@
 import { TFeedsResponse, getFeedsApi } from '../../utils/burger-api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  SerializedError
+} from '@reduxjs/toolkit';
 
 type TFeedState = {
   feedData: TFeedsResponse;
   loading: boolean;
+  error: SerializedError | null;
 };
 
-const initialState: TFeedState = {
+export const initialState: TFeedState = {
   feedData: {
     success: false,
     orders: [],
     total: 0,
     totalToday: 0
   },
-  loading: false
+  loading: false,
+  error: null
 };
 
 export const getFeedsAllThunk = createAsyncThunk(
@@ -33,13 +39,15 @@ export const feedSlice = createSlice({
     builder
       .addCase(getFeedsAllThunk.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(getFeedsAllThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.feedData = action.payload;
       })
-      .addCase(getFeedsAllThunk.rejected, (state) => {
+      .addCase(getFeedsAllThunk.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.error;
       });
   }
 });
