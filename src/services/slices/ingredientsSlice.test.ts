@@ -6,37 +6,7 @@ import {
   ingredientsSlice,
   initialState
 } from './ingredientsSlice';
-
-const ingredients = [
-  {
-    _id: '643d69a5c3f7b9001cfa093c',
-    name: 'Краторная булка N-200i',
-    type: 'bun',
-    proteins: 80,
-    fat: 24,
-    carbohydrates: 53,
-    calories: 420,
-    price: 1255,
-    image: 'https://code.s3.yandex.net/react/code/bun-02.png',
-    image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
-    image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
-    __v: 0
-  },
-  {
-    _id: '643d69a5c3f7b9001cfa0941',
-    name: 'Биокотлета из марсианской Магнолии',
-    type: 'main',
-    proteins: 420,
-    fat: 142,
-    carbohydrates: 242,
-    calories: 4242,
-    price: 424,
-    image: 'https://code.s3.yandex.net/react/code/meat-01.png',
-    image_mobile: 'https://code.s3.yandex.net/react/code/meat-01-mobile.png',
-    image_large: 'https://code.s3.yandex.net/react/code/meat-01-large.png',
-    __v: 0
-  }
-];
+import { ingredient, ingredients } from '../mock-data/ingredientsMockData';
 
 describe('[3] - Тест проверяют редьюсер слайса ingredients.', () => {
   describe('[3.1] - Проверка асинхронных экшенов.', () => {
@@ -72,20 +42,6 @@ describe('[3] - Тест проверяют редьюсер слайса ingred
     });
   });
   describe('[3.2] - Проверка селекторов.', () => {
-    const ingredient = {
-      _id: '643d69a5c3f7b9001cfa093c',
-      name: 'Краторная булка N-200i',
-      type: 'bun',
-      proteins: 80,
-      fat: 24,
-      carbohydrates: 53,
-      calories: 420,
-      price: 1255,
-      image: 'https://code.s3.yandex.net/react/code/bun-02.png',
-      image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
-      image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png'
-    };
-
     const store = configureStore({
       reducer: {
         ingridients: ingredientsSlice.reducer

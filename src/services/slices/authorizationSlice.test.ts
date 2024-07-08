@@ -1,4 +1,7 @@
-import { TAuthResponse, TUserResponse } from '@api';
+import {
+  responceAuthData,
+  responceUserData
+} from '../mock-data/authorizationMockData';
 import {
   authChecked,
   authorizationSlice,
@@ -15,24 +18,6 @@ import {
   updateUserThunk
 } from './authorizationSlice';
 import { configureStore } from '@reduxjs/toolkit';
-
-const responceAuthData: TAuthResponse = {
-  success: true,
-  refreshToken: '000000000000000001',
-  accessToken: '000000000000000002',
-  user: {
-    email: 'test@test.test',
-    name: 'testUser'
-  }
-};
-
-const responceUserData: TUserResponse = {
-  success: true,
-  user: {
-    email: 'test@test.test',
-    name: 'testUser'
-  }
-};
 
 describe('[4] - Тест проверяют редьюсер слайса authorization.', () => {
   describe('[4.1] - Проверка синхронных экшенов.', () => {
@@ -129,7 +114,7 @@ describe('[4] - Тест проверяют редьюсер слайса author
         expect(userRequest).toBe(false);
         expect(userData).toEqual(responceUserData);
       });
-      test('[4.2.3.3] - ', () => {
+      test('[4.2.3.3] - Проверка при вызове экшена Failed.', () => {
         const state = authorizationSlice.reducer(initialState, {
           type: getUserThunk.rejected.type,
           error: { name: 'test error', message: 'Test error message' }

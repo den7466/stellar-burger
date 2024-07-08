@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>44/48</span>
+                <span class='fraction'>56/56</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">85.71% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>44/48</span>
+                <span class='fraction'>56/56</span>
             </div>
         
             
@@ -111,7 +111,15 @@
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -145,36 +153,50 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { TFeedsResponse, getFeedsApi } from '../../utils/burger-api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  SerializedError
+} from '@reduxjs/toolkit';
 &nbsp;
 type TFeedState = {
   feedData: TFeedsResponse;
   loading: boolean;
+  error: SerializedError | null;
 };
 &nbsp;
-const initialState: TFeedState = {
+export const initialState: TFeedState = {
   feedData: {
     success: false,
     orders: [],
     total: 0,
     totalToday: 0
   },
-  loading: false
+  loading: false,
+  error: null
 };
 &nbsp;
 export const getFeedsAllThunk = createAsyncThunk(
@@ -187,20 +209,22 @@ export const feedSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    getFeedsAllSelector: <span class="fstat-no" title="function not covered" >(state: TFeedState) =&gt; state.feedData?.orders,</span>
-    getFeedsDataSelector: <span class="fstat-no" title="function not covered" >(state: TFeedState) =&gt; state.</span>feedData
+    getFeedsAllSelector: (state: TFeedState) =&gt; state.feedData<span class="branch-0 cbranch-no" title="branch not covered" >?.o</span>rders,
+    getFeedsDataSelector: (state: TFeedState) =&gt; state.feedData
   },
   extraReducers(builder) {
     builder
       .addCase(getFeedsAllThunk.pending, (state) =&gt; {
-<span class="cstat-no" title="statement not covered" >        state.loading = true;</span>
+        state.loading = true;
+        state.error = null;
       })
       .addCase(getFeedsAllThunk.fulfilled, (state, action) =&gt; {
-<span class="cstat-no" title="statement not covered" >        state.loading = false;</span>
-<span class="cstat-no" title="statement not covered" >        state.feedData = action.payload;</span>
+        state.loading = false;
+        state.feedData = action.payload;
       })
-      .addCase(getFeedsAllThunk.rejected, (state) =&gt; {
-<span class="cstat-no" title="statement not covered" >        state.loading = false;</span>
+      .addCase(getFeedsAllThunk.rejected, (state, action) =&gt; {
+        state.loading = false;
+        state.error = action.error;
       });
   }
 });
@@ -214,7 +238,7 @@ export const { getFeedsAllSelector, getFeedsDataSelector } =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-05T15:44:56.664Z
+                at 2024-07-08T15:59:22.535Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

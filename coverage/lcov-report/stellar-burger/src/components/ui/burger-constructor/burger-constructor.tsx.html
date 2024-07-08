@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/105</span>
+                <span class='fraction'>0/113</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/105</span>
+                <span class='fraction'>0/113</span>
             </div>
         
             
@@ -168,7 +168,23 @@
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -295,7 +311,10 @@
 <span class="cstat-no" title="statement not covered" >}) =&gt; (</span>
 <span class="cstat-no" title="statement not covered" >  &lt;section className={styles.burger_constructor}&gt;</span>
 <span class="cstat-no" title="statement not covered" >    {constructorItems.bun ? (</span>
-<span class="cstat-no" title="statement not covered" >      &lt;div className={`${styles.element} mb-4 mr-4`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;div</span>
+<span class="cstat-no" title="statement not covered" >        className={`${styles.element} mb-4 mr-4`}</span>
+<span class="cstat-no" title="statement not covered" >        data-cy={'cy-constructor-type-bun-1'}</span>
+<span class="cstat-no" title="statement not covered" >      &gt;</span>
 <span class="cstat-no" title="statement not covered" >        &lt;ConstructorElement</span>
 <span class="cstat-no" title="statement not covered" >          type='top'</span>
 <span class="cstat-no" title="statement not covered" >          isLocked</span>
@@ -307,6 +326,7 @@
 <span class="cstat-no" title="statement not covered" >    ) : (</span>
 <span class="cstat-no" title="statement not covered" >      &lt;div</span>
 <span class="cstat-no" title="statement not covered" >        className={`${styles.noBuns} ${styles.noBunsTop} ml-8 mb-4 mr-5 text text_type_main-default`}</span>
+<span class="cstat-no" title="statement not covered" >        data-cy={'cy-constructor-type-bun-1'}</span>
 <span class="cstat-no" title="statement not covered" >      &gt;</span>
 <span class="cstat-no" title="statement not covered" >        Выберите булки</span>
 <span class="cstat-no" title="statement not covered" >      &lt;/div&gt;</span>
@@ -332,7 +352,10 @@
 <span class="cstat-no" title="statement not covered" >      )}</span>
 <span class="cstat-no" title="statement not covered" >    &lt;/ul&gt;</span>
 <span class="cstat-no" title="statement not covered" >    {constructorItems.bun ? (</span>
-<span class="cstat-no" title="statement not covered" >      &lt;div className={`${styles.element} mt-4 mr-4`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;div</span>
+<span class="cstat-no" title="statement not covered" >        className={`${styles.element} mt-4 mr-4`}</span>
+<span class="cstat-no" title="statement not covered" >        data-cy={'cy-constructor-type-bun-2'}</span>
+<span class="cstat-no" title="statement not covered" >      &gt;</span>
 <span class="cstat-no" title="statement not covered" >        &lt;ConstructorElement</span>
 <span class="cstat-no" title="statement not covered" >          type='bottom'</span>
 <span class="cstat-no" title="statement not covered" >          isLocked</span>
@@ -344,11 +367,12 @@
 <span class="cstat-no" title="statement not covered" >    ) : (</span>
 <span class="cstat-no" title="statement not covered" >      &lt;div</span>
 <span class="cstat-no" title="statement not covered" >        className={`${styles.noBuns} ${styles.noBunsBottom} ml-8 mb-4 mr-5 text text_type_main-default`}</span>
+<span class="cstat-no" title="statement not covered" >        data-cy={'cy-constructor-type-bun-2'}</span>
 <span class="cstat-no" title="statement not covered" >      &gt;</span>
 <span class="cstat-no" title="statement not covered" >        Выберите булки</span>
 <span class="cstat-no" title="statement not covered" >      &lt;/div&gt;</span>
 <span class="cstat-no" title="statement not covered" >    )}</span>
-<span class="cstat-no" title="statement not covered" >    &lt;div className={`${styles.total} mt-10 mr-4`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;div className={`${styles.total} mt-10 mr-4`} data-cy={'cy-order-info'}&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;div className={`${styles.cost} mr-10`}&gt;</span>
 <span class="cstat-no" title="statement not covered" >        &lt;p className={`text ${styles.text} mr-2`}&gt;{price}&lt;/p&gt;</span>
 <span class="cstat-no" title="statement not covered" >        &lt;CurrencyIcon type='primary' /&gt;</span>
@@ -385,7 +409,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-05T15:44:56.664Z
+                at 2024-07-08T15:59:22.535Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

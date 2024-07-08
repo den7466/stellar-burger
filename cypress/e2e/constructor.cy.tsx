@@ -37,6 +37,7 @@ describe('[1] - Тест проверяет страницу конструкт�
         it('[1.2.1] - Проверка открытия модального окна ингредиента.', () => {
             cy.get(`[data-cy=cy-643d69a5c3f7b9001cfa093e] a`).click();
             cy.get(`[data-cy=cy-modal]`).should('be.visible');
+            cy.get(`[data-cy=cy-ingredient-details-header]`).contains('Филе Люминесцентного тетраодонтимформа');
         });
         it('[1.2.2] - Проверка закрытия по клику на крестик.', () => {
             cy.get(`[data-cy=cy-643d69a5c3f7b9001cfa093e] a`).click();
@@ -56,7 +57,8 @@ describe('[1] - Тест проверяет страницу конструкт�
             cy.get(`[data-cy=cy-643d69a5c3f7b9001cfa0942] button`).contains('Добавить').click();
             cy.get(`[data-cy=cy-643d69a5c3f7b9001cfa093c] button`).contains('Добавить').click();
             cy.get(`[data-cy=cy-order-info] button`).contains('Оформить заказ').click();
-            cy.get(`[data-cy=cy-modal] h2`).contains('45205');
+            cy.get(`[data-cy=cy-modal]`).should('be.visible');
+            cy.get(`[data-cy=cy-order-number]`).contains('45205');
             cy.get(`[data-cy=cy-button-close-modal]`).click();
             cy.get(`[data-cy=cy-modal]`).should('not.exist');
             cy.get(`[data-cy=cy-constructor-type-bun-1]`).children().should('not.exist');
